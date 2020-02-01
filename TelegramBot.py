@@ -65,12 +65,15 @@ def error(update, context):
 #function to post on the telegram the things liked on Reddit
 def RedditSender(context):
     for post in Reddit.redditor(Configs["RedditUsername"]).upvoted(limit=100):
-        if (IsImage(post.url) and NotPosted(post.url)):
-            if(CheckSubreddit(post)):
-                context.bot.sendPhoto(chat_id=Configs["WallpaperChannelId"],  photo=post.url, caption=post.subreddit_name_prefixed)
-                context.bot.sendDocument(chat_id=Configs["WallpaperChannelId"],  document=post.url)
-            else:
-                context.bot.sendPhoto(chat_id=Configs["MemeChannelId"],  photo=post.url, caption=post.subreddit_name_prefixed + ": "+ post.title + "\n" + "reddit.com" + post.permalink)
+        if (IsGif(post.url) and NotPosted(post.url)):
+            context.bot.sendAnimation(chat_id=Configs["MemeChannelId"],  animation=post.url, caption=post.subreddit_name_prefixed + ": "+ post.title + "\n" + "reddit.com" + post.permalink)
+        else:
+            if (IsImage(post.url) and NotPosted(post.url)):
+                if(CheckSubreddit(post)):
+                    context.bot.sendPhoto(chat_id=Configs["WallpaperChannelId"],  photo=post.url, caption=post.subreddit_name_prefixed)
+                    context.bot.sendDocument(chat_id=Configs["WallpaperChannelId"],  document=post.url)
+                else:
+                    context.bot.sendPhoto(chat_id=Configs["MemeChannelId"],  photo=post.url, caption=post.subreddit_name_prefixed + ": "+ post.title + "\n" + "reddit.com" + post.permalink)
     
 def CheckSubreddit(post):
     if (post.subreddit == "EarthPorn" or
@@ -78,6 +81,11 @@ def CheckSubreddit(post):
         post.subreddit == "backpacking" or
         post.subreddit == "hiking" or
         post.subreddit == "CampingandHiking"):
+        return True
+    return False
+
+def IsGif(url):
+    if (url.endswith('.gif')):
         return True
     return False
 
