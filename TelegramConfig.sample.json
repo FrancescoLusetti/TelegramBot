@@ -1,8 +1,0 @@
-{
-    "TelegramToken" : "Token of your Bot",
-    "Username" : "Your username on telegram",
-    "UserID" : 1,
-    "MemeChannelId" : -1,
-    "WallpaperChannelId" : -1,
-    "RedditUsername" : "Your username on reddit"
-}

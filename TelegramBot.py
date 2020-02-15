@@ -15,8 +15,8 @@ bot.
 
 import logging
 import json
-import requests
 import praw
+import subprocess
 
 Reddit = praw.Reddit('ImgToTelegram')
 
@@ -56,7 +56,8 @@ def ip(update, context):
     print("/ip {} - {}".format(update.message.from_user.username, update.message.from_user.id))
     if Configs["Username"] == update.message.from_user.username and Configs["UserID"] == update.message.from_user.id:
         print("/ip {} - {}".format(update.message.from_user.username, update.message.from_user.id))
-        update.message.reply_text(requests.get('https://httpbin.org/ip').json()['origin'])
+        update.message.reply_text(subprocess.getoutput('dig TXT +short o-o.myaddr.l.google.com @ns1.google.com ' +
+                                                       '| awk -F\'\"\' \'{ print $2}\''))
 
 def error(update, context):
     """Log Errors caused by Updates."""
